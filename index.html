@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Caner's Website</title>
+<title>Caner Ultra Modern Web</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
 
@@ -25,9 +25,27 @@ html { scroll-behavior: smooth; scroll-padding-top: 80px; }
 /* Icon animasyonları */
 .icon-bounce { animation: bounce 2s infinite; }
 
-/* Button hover scale */
-.btn-hover { transition: transform 0.3s, background-color 0.3s; }
+/* Button hover & parlayan efekt */
+.btn-hover {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s, background-color 0.3s;
+}
 .btn-hover:hover { transform: scale(1.05); }
+.btn-hover::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: rgba(255,255,255,0.15);
+  transform: rotate(45deg) translate(-100%, -100%);
+  transition: transform 0.5s;
+}
+.btn-hover:hover::after {
+  transform: rotate(45deg) translate(100%, 100%);
+}
 
 /* Footer sosyal ikon hover */
 .social-icon:hover { color:#10b981; transform:scale(1.2); transition:0.3s; }
@@ -147,6 +165,9 @@ html { scroll-behavior: smooth; scroll-padding-top: 80px; }
   </div>
 </footer>
 
+<!-- Confetti JS -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
 <!-- Scripts -->
 <script>
   // Fade-in
@@ -171,7 +192,7 @@ html { scroll-behavior: smooth; scroll-padding-top: 80px; }
   });
   mobileMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>mobileMenu.classList.add('hidden')));
 
-  // Formspree AJAX
+  // Formspree AJAX + Confetti
   const form = document.getElementById('contact-form');
   const btn  = document.getElementById('submit-btn');
   const ok   = document.getElementById('alert-success');
@@ -186,78 +207,102 @@ html { scroll-behavior: smooth; scroll-padding-top: 80px; }
     btn.textContent = 'Gönderiliyor...';
 
     const formData = new FormData(form);
-    try{
+    try {
       const ENDPOINT_URL = 'https://formspree.io/f/xvgqyagb';
-      const response = await fetch(ENDPOINT_URL,{
-        method:'POST',
-        body:formData,
-        headers:{'Accept':'application/json'}
+      const response = await fetch(ENDPOINT_URL, {
+        method: 'POST',
+        body: formData,
+        headers: { 'Accept': 'application/json' }
       });
-      if(response.ok){
+      if (response.ok) {
         ok.classList.remove('hidden');
         form.reset();
-      }else{
-        err.classList.remove('hidden');
-      }
-    }catch(e){
-      err.classList.remove('hidden');
-    }finally{
-      btn.disabled = false;
-      btn.textContent = originalText;
-    }
+        confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+      } else { err.classList.remove('hidden'); }
+    } catch(e) { err.classList.remove('hidden'); }
+    finally { btn.disabled = false; btn.textContent = originalText; }
   });
 
-  // === PARTICLE ANİMASYONU ===
-  const canvas = document.getElementById("particles-canvas");
-  const ctx = canvas.getContext("2d");
-  let particlesArray;
-  let mouse = { x: null, y: null, radius: 100 };
-  window.addEventListener("mousemove", (e) => { mouse.x = e.x; mouse.y = e.y; });
+  // Parallax Effect
+  const parallaxElems = document.querySelectorAll('[data-parallax]');
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.pageYOffset;
+    parallaxElems.forEach(el => {
+      const speed = parseFloat(el.getAttribute('data-parallax'));
+      el.style.transform = `translateY(${scrollTop * speed}px)`;
+    });
+  });
 
-  function initParticles() {
+  // Particle Background + Mouse Interaction
+  const canvas = document.getElementById('particles-canvas');
+  const ctx = canvas.getContext('2d');
+  let particlesArray = [];
+  let mouse = { x: canvas.width/2, y: canvas.height/2 };
+
+  function resizeCanvas() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    particlesArray = [];
-    const numberOfParticles = Math.floor((canvas.width * canvas.height) / 9000);
-    for (let i = 0; i < numberOfParticles; i++) {
-      particlesArray.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        size: Math.random() * 3 + 1,
-        speedX: (Math.random() - 0.5) * 1,
-        speedY: (Math.random() - 0.5) * 1
-      });
+  }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
+
+  class Particle {
+    constructor() {
+      this.x = Math.random()*canvas.width;
+      this.y = Math.random()*canvas.height;
+      this.size = Math.random()*3+1;
+      this.speedX = (Math.random()-0.5)*0.5;
+      this.speedY = (Math.random()-0.5)*0.5;
+    }
+    update() {
+      this.x += this.speedX;
+      this.y += this.speedY;
+      if(this.x<0||this.x>canvas.width)this.speedX*=-1;
+      if(this.y<0||this.y>canvas.height)this.speedY*=-1;
+    }
+    draw() {
+      ctx.fillStyle='rgba(255,255,255,0.5)';
+      ctx.beginPath();
+      ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+      ctx.fill();
     }
   }
 
-  function drawParticles() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "rgba(255,255,255,0.7)";
-    particlesArray.forEach((p) => {
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-      ctx.fill();
-      p.x += p.speedX;
-      p.y += p.speedY;
-      if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
-      if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
-    });
+  function initParticles() {
+    particlesArray = [];
+    const number = Math.floor((canvas.width*canvas.height)/8000);
+    for(let i=0;i<number;i++) particlesArray.push(new Particle());
   }
-
-  function animateParticles() { drawParticles(); requestAnimationFrame(animateParticles); }
-  window.addEventListener("resize", initParticles);
   initParticles();
-  animateParticles();
 
-  // === PARALLAX ===
-  const parallaxElements = document.querySelectorAll("[data-parallax]");
-  window.addEventListener("scroll", () => {
-    let scrollY = window.scrollY;
-    parallaxElements.forEach(el => {
-      let speed = parseFloat(el.dataset.parallax);
-      el.style.transform = `translateY(${scrollY * speed}px)`;
+  function drawInteractiveParticles(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particlesArray.forEach(p=>{
+      p.update(); p.draw();
+      const dx = p.x - mouse.x;
+      const dy = p.y - mouse.y;
+      const distance = Math.sqrt(dx*dx + dy*dy);
+      if(distance<150){
+        ctx.strokeStyle = `rgba(255,255,255,${1-distance/150})`;
+        ctx.lineWidth=1;
+        ctx.beginPath();
+        ctx.moveTo(p.x,p.y);
+        ctx.lineTo(mouse.x,mouse.y);
+        ctx.stroke();
+      }
     });
-  });
+    ctx.beginPath();
+    const gradient = ctx.createRadialGradient(mouse.x,mouse.y,0,mouse.x,mouse.y,100);
+    gradient.addColorStop(0,'rgba(255,255,255,0.2)');
+    gradient.addColorStop(1,'rgba(255,255,255,0)');
+    ctx.fillStyle = gradient;
+    ctx.arc(mouse.x,mouse.y,100,0,Math.PI*2);
+    ctx.fill();
+    requestAnimationFrame(drawInteractiveParticles);
+  }
+  drawInteractiveParticles();
 </script>
 </body>
 </html>
