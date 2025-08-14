@@ -1,168 +1,263 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Caner Modern Web Sitesi</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Caner Ultra Modern Web</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
 
-  <style>
-    html { scroll-behavior: smooth; scroll-padding-top: 80px; }
-    .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
-    .fade-in.visible { opacity: 1; transform: translateY(0); }
-    @keyframes gradientBG { 0% {background-position:0% 50%;} 50% {background-position:100% 50%;} 100% {background-position:0% 50%;} }
-    .animated-gradient { background: linear-gradient(270deg,#10b981,#3b82f6,#8b5cf6,#f59e0b); background-size:600% 600%; animation:gradientBG 20s ease infinite; }
-  </style>
+<style>
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+/* Fade & scroll animasyonları */
+.fade-in { opacity:0; transform:translateY(20px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+.fade-in.visible { opacity:1; transform:translateY(0); }
+
+/* Gradient arka plan animasyonu */
+@keyframes gradientBG { 0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;} }
+.animated-gradient { background: linear-gradient(270deg,#10b981,#3b82f6,#8b5cf6,#f59e0b); background-size:600% 600%; animation:gradientBG 20s ease infinite; }
+
+/* Hero animasyonları */
+.hero-title { animation: bounce 2s infinite; }
+.hero-subtitle { animation: pulse 2s infinite; }
+
+/* Icon animasyonları */
+.icon-bounce { animation: bounce 2s infinite; }
+
+/* Button hover scale */
+.btn-hover { transition: transform 0.3s, background-color 0.3s; }
+.btn-hover:hover { transform: scale(1.05); }
+
+/* Footer sosyal ikon hover */
+.social-icon:hover { color:#10b981; transform:scale(1.2); transition:0.3s; }
+</style>
 </head>
-<body class="bg-gray-100 font-sans text-gray-800">
+<body class="bg-gray-100 font-sans text-gray-800 relative overflow-x-hidden">
 
-  <!-- Navbar -->
-  <nav class="fixed w-full bg-white shadow-md z-50">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-      <a href="#hero" class="font-bold text-xl text-green-600">CanerWeb</a>
-      <div class="hidden md:flex space-x-6">
-        <a href="#features" class="hover:text-green-600 transition">Özellikler</a>
-        <a href="#cta"      class="hover:text-green-600 transition">Başla</a>
-        <a href="#contact"  class="hover:text-green-600 transition">İletişim</a>
-      </div>
-      <button id="menu-btn" aria-label="Menüyü Aç/Kapat" class="md:hidden text-gray-700 focus:outline-none">
-        <i class="fas fa-bars text-2xl"></i>
-      </button>
-    </div>
-    <div id="mobile-menu" class="hidden md:hidden bg-white px-6 pb-4 border-t">
-      <a href="#features" class="block py-2 hover:text-green-600 transition">Özellikler</a>
-      <a href="#cta"      class="block py-2 hover:text-green-600 transition">Başla</a>
-      <a href="#contact"  class="block py-2 hover:text-green-600 transition">İletişim</a>
-    </div>
-  </nav>
+<!-- Particle Arka Plan -->
+<canvas id="particles-canvas" class="absolute top-0 left-0 w-full h-full -z-10"></canvas>
 
-  <!-- Hero -->
-  <header id="hero" class="animated-gradient text-white pt-24 py-36 relative overflow-hidden text-center">
-    <div class="max-w-3xl mx-auto px-6">
-      <h1 class="text-5xl md:text-6xl font-bold mb-4 animate-bounce">Modern Web Tasarım</h1>
-      <p class="text-lg md:text-xl mb-6 animate-pulse">Profesyonel, hızlı ve şık bir landing page deneyimi</p>
-      <a href="#features" class="bg-white text-blue-500 font-bold py-3 px-7 rounded shadow-lg hover:bg-gray-100 transition transform hover:scale-110">
-        Başlayalım <i class="fas fa-arrow-right ml-2"></i>
+<!-- Navbar -->
+<nav class="fixed w-full bg-white shadow-md z-50">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+    <a href="#hero" class="font-bold text-xl text-green-600">CanerWeb</a>
+    <div class="hidden md:flex space-x-6">
+      <a href="#features" class="hover:text-green-600 transition">Özellikler</a>
+      <a href="#visual"   class="hover:text-green-600 transition">Görseller</a>
+      <a href="#cta"      class="hover:text-green-600 transition">Başla</a>
+      <a href="#contact"  class="hover:text-green-600 transition">İletişim</a>
+    </div>
+    <button id="menu-btn" aria-label="Menüyü Aç/Kapat" class="md:hidden text-gray-700 focus:outline-none">
+      <i class="fas fa-bars text-2xl"></i>
+    </button>
+  </div>
+  <div id="mobile-menu" class="hidden md:hidden bg-white px-6 pb-4 border-t">
+    <a href="#features" class="block py-2 hover:text-green-600 transition">Özellikler</a>
+    <a href="#visual"   class="block py-2 hover:text-green-600 transition">Görseller</a>
+    <a href="#cta"      class="block py-2 hover:text-green-600 transition">Başla</a>
+    <a href="#contact"  class="block py-2 hover:text-green-600 transition">İletişim</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<header id="hero" class="animated-gradient text-white pt-24 py-36 relative overflow-hidden text-center">
+  <div data-parallax="0.3" class="max-w-3xl mx-auto px-6">
+    <h1 class="text-5xl md:text-6xl font-bold mb-4 hero-title">Ultra Modern Web Tasarım</h1>
+    <p class="text-lg md:text-xl mb-6 hero-subtitle">Hızlı, şık ve kullanıcı dostu profesyonel landing page</p>
+    <a href="#features" class="bg-white text-blue-500 font-bold py-3 px-7 rounded shadow-lg btn-hover inline-block">
+      Başlayalım <i class="fas fa-arrow-right ml-2"></i>
+    </a>
+  </div>
+</header>
+
+<!-- Features -->
+<section id="features" class="py-24 bg-gray-100">
+  <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-10 text-center">
+    <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl btn-hover fade-in">
+      <div class="text-green-500 text-5xl mb-4 icon-bounce"><i class="fas fa-rocket"></i></div>
+      <h2 class="text-2xl font-bold mb-2">Hızlı</h2>
+      <p class="text-gray-600">Siteniz inanılmaz hızlı açılır ve kullanıcı dostudur.</p>
+    </div>
+    <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl btn-hover fade-in">
+      <div class="text-blue-500 text-5xl mb-4 icon-bounce"><i class="fas fa-paint-brush"></i></div>
+      <h2 class="text-2xl font-bold mb-2">Estetik</h2>
+      <p class="text-gray-600">Modern tasarım trendlerine uygun, göz alıcı ve sade arayüz.</p>
+    </div>
+    <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl btn-hover fade-in">
+      <div class="text-purple-500 text-5xl mb-4 icon-bounce"><i class="fas fa-shield-alt"></i></div>
+      <h2 class="text-2xl font-bold mb-2">Güvenli</h2>
+      <p class="text-gray-600">Verileriniz güvenli, siteniz standartlara uygundur.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Visual / Parallax -->
+<section id="visual" class="py-24 bg-fixed bg-center bg-cover fade-in" style="background-image:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80');">
+  <div data-parallax="0.2" class="bg-black bg-opacity-50 py-20">
+    <div class="max-w-4xl mx-auto text-center text-white px-6">
+      <h2 class="text-4xl font-bold mb-6">Görsellik & UX Önceliğimiz</h2>
+      <p class="text-lg mb-10">Web siten hızlı, modern ve estetik olmalı.</p>
+      <a href="#cta" class="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded shadow-lg btn-hover">
+        Detayları Gör <i class="fas fa-arrow-down ml-2"></i>
       </a>
     </div>
-  </header>
+  </div>
+</section>
 
-  <!-- Features -->
-  <section id="features" class="py-24 bg-gray-100">
-    <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-10 text-center">
-      <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition transform hover:scale-105 fade-in">
-        <div class="text-green-500 text-5xl mb-4"><i class="fas fa-rocket"></i></div>
-        <h2 class="text-2xl font-bold mb-2">Hızlı</h2>
-        <p class="text-gray-600">Siteniz inanılmaz hızlı açılır ve kullanıcı dostudur.</p>
-      </div>
-      <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition transform hover:scale-105 fade-in">
-        <div class="text-blue-500 text-5xl mb-4"><i class="fas fa-paint-brush"></i></div>
-        <h2 class="text-2xl font-bold mb-2">Estetik</h2>
-        <p class="text-gray-600">Modern tasarım trendlerine uygun, göz alıcı ve sade arayüz.</p>
-      </div>
-      <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition transform hover:scale-105 fade-in">
-        <div class="text-purple-500 text-5xl mb-4"><i class="fas fa-shield-alt"></i></div>
-        <h2 class="text-2xl font-bold mb-2">Güvenli</h2>
-        <p class="text-gray-600">Verileriniz güvenli, siteniz standartlara uygundur.</p>
-      </div>
-    </div>
-  </section>
+<!-- CTA -->
+<section id="cta" class="py-24 text-center fade-in">
+  <h2 class="text-4xl font-bold mb-6">Hemen Başla!</h2>
+  <p class="text-gray-700 mb-8">Kendi web siteni oluşturmak için adım at ve bu ultra modern tasarımı kullan.</p>
+  <a href="#contact" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded shadow-lg btn-hover">
+    Formu Doldur <i class="fas fa-arrow-down ml-2"></i>
+  </a>
+</section>
 
-  <!-- CTA -->
-  <section id="cta" class="py-24 text-center fade-in">
-    <h2 class="text-4xl font-bold mb-6">Hemen Başla!</h2>
-    <p class="text-gray-700 mb-8">Kendi web siteni oluşturmak için adım at ve bu modern tasarımı kullan.</p>
-    <a href="#contact" class="bg-green-500 hover:bg-green-700 text-white font-bold py-4 px-8 rounded shadow-lg transition transform hover:scale-110">
-      Formu Doldur <i class="fas fa-arrow-down ml-2"></i>
-    </a>
-  </section>
+<!-- Contact Form -->
+<section id="contact" class="py-24 bg-gray-200 text-center fade-in">
+  <h2 class="text-4xl font-bold mb-6">İletişime Geç</h2>
+  <p class="text-gray-700 mb-8">Sorularınız için hemen mesaj bırakın!</p>
 
-  <!-- Contact Form (AJAX + Formspree) -->
-  <section id="contact" class="py-24 bg-gray-200 text-center fade-in">
-    <h2 class="text-4xl font-bold mb-6">İletişime Geç</h2>
-    <p class="text-gray-700 mb-8">Sorularınız için hemen mesaj bırakın!</p>
+  <div id="alert-success" class="hidden max-w-xl mx-auto mb-4 rounded-lg border border-green-300 bg-green-50 text-green-800 p-4">
+    <i class="fa-solid fa-circle-check mr-2"></i> Mesajınız başarıyla gönderildi!
+  </div>
+  <div id="alert-error" class="hidden max-w-xl mx-auto mb-4 rounded-lg border border-red-300 bg-red-50 text-red-800 p-4">
+    <i class="fa-solid fa-triangle-exclamation mr-2"></i> Bir hata oluştu. Lütfen tekrar deneyin.
+  </div>
 
-    <div id="alert-success" class="hidden max-w-xl mx-auto mb-4 rounded-lg border border-green-300 bg-green-50 text-green-800 p-4">
-      <i class="fa-solid fa-circle-check mr-2"></i> Mesajınız başarıyla gönderildi. Teşekkürler!
-    </div>
-    <div id="alert-error" class="hidden max-w-xl mx-auto mb-4 rounded-lg border border-red-300 bg-red-50 text-red-800 p-4">
-      <i class="fa-solid fa-triangle-exclamation mr-2"></i> Bir hata oluştu. Lütfen tekrar deneyin.
-    </div>
+  <form id="contact-form" class="max-w-xl mx-auto grid gap-4">
+    <input type="text" name="_gotcha" class="hidden" tabindex="-1" autocomplete="off"/>
+    <input type="text" name="isim"  placeholder="Adınız" required class="p-4 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400"/>
+    <input type="email" name="email" placeholder="Email" required class="p-4 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400"/>
+    <textarea name="mesaj" placeholder="Mesajınız" rows="4" required class="p-4 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400"></textarea>
+    <button id="submit-btn" type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded shadow-lg btn-hover disabled:opacity-60 disabled:cursor-not-allowed">
+      Gönder
+    </button>
+  </form>
+</section>
 
-    <form id="contact-form" class="max-w-xl mx-auto grid gap-4">
-      <input type="text" name="_gotcha" class="hidden" tabindex="-1" autocomplete="off"/>
-      <input type="text" name="isim"  placeholder="Adınız" required class="p-4 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400"/>
-      <input type="email" name="email" placeholder="Email" required class="p-4 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400"/>
-      <textarea name="mesaj" placeholder="Mesajınız" rows="4" required class="p-4 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400"></textarea>
-      <button id="submit-btn" type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded shadow-lg transition transform hover:scale-105 disabled:opacity-60 disabled:cursor-not-allowed">
-        Gönder
-      </button>
-    </form>
-  </section>
+<!-- Footer -->
+<footer class="bg-gray-900 text-gray-400 py-8 text-center fade-in">
+  <p>© 2025 Caner Teper. Tüm hakları saklıdır.</p>
+  <div class="flex justify-center space-x-4 mt-4">
+    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+  </div>
+</footer>
 
-  <!-- Footer -->
-  <footer class="bg-gray-900 text-gray-400 py-8 text-center fade-in">
-    © 2025 Caner Teper. Tüm hakları saklıdır.
-  </footer>
-
-  <!-- Scripts -->
-  <script>
-    // Fade-in
-    const faders = document.querySelectorAll('.fade-in');
-    const appearOptions = { threshold:0.1 };
-    const appearOnScroll = new IntersectionObserver((entries, observer)=>{
-      entries.forEach(entry=>{
-        if(entry.isIntersecting){
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, appearOptions);
-    faders.forEach(fader=>appearOnScroll.observe(fader));
-
-    // Hamburger
-    const menuBtn = document.getElementById('menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    menuBtn.addEventListener('click',()=>mobileMenu.classList.toggle('hidden'));
-    mobileMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>mobileMenu.classList.add('hidden')));
-
-    // Formspree AJAX
-    const form = document.getElementById('contact-form');
-    const btn  = document.getElementById('submit-btn');
-    const ok   = document.getElementById('alert-success');
-    const err  = document.getElementById('alert-error');
-
-    form.addEventListener('submit', async (e)=>{
-      e.preventDefault();
-      ok.classList.add('hidden');
-      err.classList.add('hidden');
-      btn.disabled = true;
-      const originalText = btn.textContent;
-      btn.textContent = 'Gönderiliyor...';
-
-      const formData = new FormData(form);
-      try{
-        const ENDPOINT_URL = 'https://formspree.io/f/xvgqyagb';
-        const response = await fetch(ENDPOINT_URL,{
-          method:'POST',
-          body:formData,
-          headers:{'Accept':'application/json'}
-        });
-        if(response.ok){
-          ok.classList.remove('hidden');
-          form.reset();
-        }else{
-          err.classList.remove('hidden');
-        }
-      }catch(e){
-        err.classList.remove('hidden');
-      }finally{
-        btn.disabled = false;
-        btn.textContent = originalText;
+<!-- Scripts -->
+<script>
+  // Fade-in
+  const faders = document.querySelectorAll('.fade-in');
+  const appearOptions = { threshold:0.1 };
+  const appearOnScroll = new IntersectionObserver((entries, observer)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
       }
     });
-  </script>
+  }, appearOptions);
+  faders.forEach(fader=>appearOnScroll.observe(fader));
 
+  // Hamburger
+  const menuBtn = document.getElementById('menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  menuBtn.addEventListener('click',()=>{
+    mobileMenu.classList.toggle('hidden');
+    document.body.style.overflow = mobileMenu.classList.contains('hidden') ? '' : 'hidden';
+  });
+  mobileMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>mobileMenu.classList.add('hidden')));
+
+  // Formspree AJAX
+  const form = document.getElementById('contact-form');
+  const btn  = document.getElementById('submit-btn');
+  const ok   = document.getElementById('alert-success');
+  const err  = document.getElementById('alert-error');
+
+  form.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    ok.classList.add('hidden');
+    err.classList.add('hidden');
+    btn.disabled = true;
+    const originalText = btn.textContent;
+    btn.textContent = 'Gönderiliyor...';
+
+    const formData = new FormData(form);
+    try{
+      const ENDPOINT_URL = 'https://formspree.io/f/xvgqyagb';
+      const response = await fetch(ENDPOINT_URL,{
+        method:'POST',
+        body:formData,
+        headers:{'Accept':'application/json'}
+      });
+      if(response.ok){
+        ok.classList.remove('hidden');
+        form.reset();
+      }else{
+        err.classList.remove('hidden');
+      }
+    }catch(e){
+      err.classList.remove('hidden');
+    }finally{
+      btn.disabled = false;
+      btn.textContent = originalText;
+    }
+  });
+
+  // === PARTICLE ANİMASYONU ===
+  const canvas = document.getElementById("particles-canvas");
+  const ctx = canvas.getContext("2d");
+  let particlesArray;
+  let mouse = { x: null, y: null, radius: 100 };
+  window.addEventListener("mousemove", (e) => { mouse.x = e.x; mouse.y = e.y; });
+
+  function initParticles() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    particlesArray = [];
+    const numberOfParticles = Math.floor((canvas.width * canvas.height) / 9000);
+    for (let i = 0; i < numberOfParticles; i++) {
+      particlesArray.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 3 + 1,
+        speedX: (Math.random() - 0.5) * 1,
+        speedY: (Math.random() - 0.5) * 1
+      });
+    }
+  }
+
+  function drawParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "rgba(255,255,255,0.7)";
+    particlesArray.forEach((p) => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fill();
+      p.x += p.speedX;
+      p.y += p.speedY;
+      if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
+      if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
+    });
+  }
+
+  function animateParticles() { drawParticles(); requestAnimationFrame(animateParticles); }
+  window.addEventListener("resize", initParticles);
+  initParticles();
+  animateParticles();
+
+  // === PARALLAX ===
+  const parallaxElements = document.querySelectorAll("[data-parallax]");
+  window.addEventListener("scroll", () => {
+    let scrollY = window.scrollY;
+    parallaxElements.forEach(el => {
+      let speed = parseFloat(el.dataset.parallax);
+      el.style.transform = `translateY(${scrollY * speed}px)`;
+    });
+  });
+</script>
 </body>
 </html>
