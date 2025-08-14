@@ -3,306 +3,190 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Caner Ultra Modern Web</title>
+<title>Caner Ultra Modern Landing Page</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
-
 <style>
-html { scroll-behavior: smooth; scroll-padding-top: 80px; }
-
-/* Fade & scroll animasyonları */
-.fade-in { opacity:0; transform:translateY(20px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
-.fade-in.visible { opacity:1; transform:translateY(0); }
-
-/* Gradient arka plan animasyonu */
-@keyframes gradientBG { 0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;} }
-.animated-gradient { background: linear-gradient(270deg,#10b981,#3b82f6,#8b5cf6,#f59e0b); background-size:600% 600%; animation:gradientBG 20s ease infinite; }
-
-/* Hero animasyonları */
-.hero-title { animation: bounce 2s infinite; }
-.hero-subtitle { animation: pulse 2s infinite; }
-
-/* Icon animasyonları */
-.icon-bounce { animation: bounce 2s infinite; }
-
-/* Button hover & parlayan efekt */
-.btn-hover {
-  position: relative;
-  overflow: hidden;
-  transition: transform 0.3s, background-color 0.3s;
-}
-.btn-hover:hover { transform: scale(1.05); }
-.btn-hover::after {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: rgba(255,255,255,0.15);
-  transform: rotate(45deg) translate(-100%, -100%);
-  transition: transform 0.5s;
-}
-.btn-hover:hover::after {
-  transform: rotate(45deg) translate(100%, 100%);
-}
-
-/* Footer sosyal ikon hover */
-.social-icon:hover { color:#10b981; transform:scale(1.2); transition:0.3s; }
+html{scroll-behavior:smooth;scroll-padding-top:80px;}
+body{overflow-x:hidden;}
+.fade-in{opacity:0;transform:translateY(20px);transition:opacity 0.8s ease-out, transform 0.8s ease-out;}
+.fade-in.visible{opacity:1;transform:translateY(0);}
+.animated-gradient{background:linear-gradient(270deg,#10b981,#3b82f6);background-size:600% 600%;transition:background 0.3s ease;}
+.hero-title{animation:bounce 2s infinite;}
+.hero-subtitle{animation:pulse 2s infinite;}
+.icon-bounce{animation:bounce 2s infinite;}
+.btn-hover:hover{transform:scale(1.05);transition:0.3s;}
+.social-icon:hover{color:#10b981;transform:scale(1.2);transition:0.3s;}
+#bgCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;}
 </style>
 </head>
-<body class="bg-gray-100 font-sans text-gray-800 relative overflow-x-hidden">
+<body class="bg-gray-100 font-sans text-gray-800">
 
-<!-- Particle Arka Plan -->
-<canvas id="particles-canvas" class="absolute top-0 left-0 w-full h-full -z-10"></canvas>
+<canvas id="bgCanvas"></canvas>
 
-<!-- Navbar -->
 <nav class="fixed w-full bg-white shadow-md z-50">
-  <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-    <a href="#hero" class="font-bold text-xl text-green-600">CanerWeb</a>
-    <div class="hidden md:flex space-x-6">
-      <a href="#features" class="hover:text-green-600 transition">Özellikler</a>
-      <a href="#visual"   class="hover:text-green-600 transition">Görseller</a>
-      <a href="#cta"      class="hover:text-green-600 transition">Başla</a>
-      <a href="#contact"  class="hover:text-green-600 transition">İletişim</a>
-    </div>
-    <button id="menu-btn" aria-label="Menüyü Aç/Kapat" class="md:hidden text-gray-700 focus:outline-none">
-      <i class="fas fa-bars text-2xl"></i>
-    </button>
-  </div>
-  <div id="mobile-menu" class="hidden md:hidden bg-white px-6 pb-4 border-t">
-    <a href="#features" class="block py-2 hover:text-green-600 transition">Özellikler</a>
-    <a href="#visual"   class="block py-2 hover:text-green-600 transition">Görseller</a>
-    <a href="#cta"      class="block py-2 hover:text-green-600 transition">Başla</a>
-    <a href="#contact"  class="block py-2 hover:text-green-600 transition">İletişim</a>
-  </div>
+<div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+<a href="#hero" class="font-bold text-xl text-green-600">CanerWeb</a>
+<div class="hidden md:flex space-x-6">
+<a href="#features" class="hover:text-green-600 transition">Özellikler</a>
+<a href="#visual" class="hover:text-green-600 transition">Görseller</a>
+<a href="#cta" class="hover:text-green-600 transition">Başla</a>
+<a href="#contact" class="hover:text-green-600 transition">İletişim</a>
+</div>
+<button id="menu-btn" aria-label="Menüyü Aç/Kapat" class="md:hidden text-gray-700 focus:outline-none"><i class="fas fa-bars text-2xl"></i></button>
+</div>
+<div id="mobile-menu" class="hidden md:hidden bg-white px-6 pb-4 border-t flex flex-col items-center space-y-4">
+<a href="#features" class="hover:text-green-600 transition">Özellikler</a>
+<a href="#visual" class="hover:text-green-600 transition">Görseller</a>
+<a href="#cta" class="hover:text-green-600 transition">Başla</a>
+<a href="#contact" class="hover:text-green-600 transition">İletişim</a>
+</div>
 </nav>
 
-<!-- Hero -->
-<header id="hero" class="animated-gradient text-white pt-24 py-36 relative overflow-hidden text-center">
-  <div data-parallax="0.3" class="max-w-3xl mx-auto px-6">
-    <h1 class="text-5xl md:text-6xl font-bold mb-4 hero-title">Ultra Modern Web Tasarım</h1>
-    <p class="text-lg md:text-xl mb-6 hero-subtitle">Hızlı, şık ve kullanıcı dostu profesyonel landing page</p>
-    <a href="#features" class="bg-white text-blue-500 font-bold py-3 px-7 rounded shadow-lg btn-hover inline-block">
-      Başlayalım <i class="fas fa-arrow-right ml-2"></i>
-    </a>
-  </div>
+<header id="hero" class="animated-gradient text-white pt-24 py-36 relative overflow-hidden text-center" data-parallax="0.3">
+<div class="max-w-3xl mx-auto px-6">
+<h1 class="text-5xl md:text-6xl font-bold mb-4 hero-title fade-in">Ultra Modern Web Tasarım</h1>
+<p class="text-lg md:text-xl mb-6 hero-subtitle fade-in">Hızlı, şık ve kullanıcı dostu profesyonel landing page</p>
+<a href="#features" class="bg-white text-blue-500 font-bold py-3 px-7 rounded shadow-lg btn-hover fade-in inline-block">
+Başlayalım <i class="fas fa-arrow-right ml-2"></i>
+</a>
+</div>
 </header>
 
-<!-- Features -->
 <section id="features" class="py-24 bg-gray-100">
-  <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-10 text-center">
-    <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl btn-hover fade-in">
-      <div class="text-green-500 text-5xl mb-4 icon-bounce"><i class="fas fa-rocket"></i></div>
-      <h2 class="text-2xl font-bold mb-2">Hızlı</h2>
-      <p class="text-gray-600">Siteniz inanılmaz hızlı açılır ve kullanıcı dostudur.</p>
-    </div>
-    <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl btn-hover fade-in">
-      <div class="text-blue-500 text-5xl mb-4 icon-bounce"><i class="fas fa-paint-brush"></i></div>
-      <h2 class="text-2xl font-bold mb-2">Estetik</h2>
-      <p class="text-gray-600">Modern tasarım trendlerine uygun, göz alıcı ve sade arayüz.</p>
-    </div>
-    <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl btn-hover fade-in">
-      <div class="text-purple-500 text-5xl mb-4 icon-bounce"><i class="fas fa-shield-alt"></i></div>
-      <h2 class="text-2xl font-bold mb-2">Güvenli</h2>
-      <p class="text-gray-600">Verileriniz güvenli, siteniz standartlara uygundur.</p>
-    </div>
-  </div>
+<div class="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-10 text-center">
+<div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl btn-hover fade-in" data-parallax="0.1">
+<div class="text-green-500 text-5xl mb-4 icon-bounce"><i class="fas fa-rocket"></i></div>
+<h2 class="text-2xl font-bold mb-2">Hızlı</h2>
+<p class="text-gray-600">Siteniz inanılmaz hızlı açılır ve kullanıcı dostudur.</p>
+</div>
+<div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl btn-hover fade-in" data-parallax="0.15">
+<div class="text-blue-500 text-5xl mb-4 icon-bounce"><i class="fas fa-paint-brush"></i></div>
+<h2 class="text-2xl font-bold mb-2">Estetik</h2>
+<p class="text-gray-600">Modern tasarım trendlerine uygun, göz alıcı ve sade arayüz.</p>
+</div>
+<div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl btn-hover fade-in" data-parallax="0.2">
+<div class="text-purple-500 text-5xl mb-4 icon-bounce"><i class="fas fa-shield-alt"></i></div>
+<h2 class="text-2xl font-bold mb-2">Güvenli</h2>
+<p class="text-gray-600">Verileriniz güvenli, siteniz standartlara uygundur.</p>
+</div>
+</div>
 </section>
 
-<!-- Visual / Parallax -->
-<section id="visual" class="py-24 bg-fixed bg-center bg-cover fade-in" style="background-image:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80');">
-  <div data-parallax="0.2" class="bg-black bg-opacity-50 py-20">
-    <div class="max-w-4xl mx-auto text-center text-white px-6">
-      <h2 class="text-4xl font-bold mb-6">Görsellik & UX Önceliğimiz</h2>
-      <p class="text-lg mb-10">Web siten hızlı, modern ve estetik olmalı.</p>
-      <a href="#cta" class="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded shadow-lg btn-hover">
-        Detayları Gör <i class="fas fa-arrow-down ml-2"></i>
-      </a>
-    </div>
-  </div>
+<section id="visual" class="py-24 bg-fixed bg-center bg-cover fade-in" style="background-image:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80');" data-parallax="0.05">
+<div class="bg-black bg-opacity-50 py-20">
+<div class="max-w-4xl mx-auto text-center text-white px-6">
+<h2 class="text-4xl font-bold mb-6">Görsellik & UX Önceliğimiz</h2>
+<p class="text-lg mb-10">Web siten hızlı, modern ve estetik olmalı.</p>
+<a href="#cta" class="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded shadow-lg btn-hover">
+Detayları Gör <i class="fas fa-arrow-down ml-2"></i>
+</a>
+</div>
+</div>
 </section>
 
-<!-- CTA -->
-<section id="cta" class="py-24 text-center fade-in">
-  <h2 class="text-4xl font-bold mb-6">Hemen Başla!</h2>
-  <p class="text-gray-700 mb-8">Kendi web siteni oluşturmak için adım at ve bu ultra modern tasarımı kullan.</p>
-  <a href="#contact" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded shadow-lg btn-hover">
-    Formu Doldur <i class="fas fa-arrow-down ml-2"></i>
-  </a>
+<section id="cta" class="py-24 text-center fade-in" data-parallax="0.1">
+<h2 class="text-4xl font-bold mb-6">Hemen Başla!</h2>
+<p class="text-gray-700 mb-8">Kendi web siteni oluşturmak için adım at ve bu ultra modern tasarımı kullan.</p>
+<a href="#contact" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded shadow-lg btn-hover">
+Formu Doldur <i class="fas fa-arrow-down ml-2"></i>
+</a>
 </section>
 
-<!-- Contact Form -->
-<section id="contact" class="py-24 bg-gray-200 text-center fade-in">
-  <h2 class="text-4xl font-bold mb-6">İletişime Geç</h2>
-  <p class="text-gray-700 mb-8">Sorularınız için hemen mesaj bırakın!</p>
-
-  <div id="alert-success" class="hidden max-w-xl mx-auto mb-4 rounded-lg border border-green-300 bg-green-50 text-green-800 p-4">
-    <i class="fa-solid fa-circle-check mr-2"></i> Mesajınız başarıyla gönderildi!
-  </div>
-  <div id="alert-error" class="hidden max-w-xl mx-auto mb-4 rounded-lg border border-red-300 bg-red-50 text-red-800 p-4">
-    <i class="fa-solid fa-triangle-exclamation mr-2"></i> Bir hata oluştu. Lütfen tekrar deneyin.
-  </div>
-
-  <form id="contact-form" class="max-w-xl mx-auto grid gap-4">
-    <input type="text" name="_gotcha" class="hidden" tabindex="-1" autocomplete="off"/>
-    <input type="text" name="isim"  placeholder="Adınız" required class="p-4 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400"/>
-    <input type="email" name="email" placeholder="Email" required class="p-4 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400"/>
-    <textarea name="mesaj" placeholder="Mesajınız" rows="4" required class="p-4 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400"></textarea>
-    <button id="submit-btn" type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded shadow-lg btn-hover disabled:opacity-60 disabled:cursor-not-allowed">
-      Gönder
-    </button>
-  </form>
+<section id="contact" class="py-24 bg-gray-200 text-center fade-in" data-parallax="0.05">
+<h2 class="text-4xl font-bold mb-6">İletişime Geç</h2>
+<p class="text-gray-700 mb-8">Sorularınız için hemen mesaj bırakın!</p>
+<div id="alert-success" class="hidden max-w-xl mx-auto mb-4 rounded-lg border border-green-300 bg-green-50 text-green-800 p-4">
+<i class="fa-solid fa-circle-check mr-2"></i> Mesajınız başarıyla gönderildi!
+</div>
+<div id="alert-error" class="hidden max-w-xl mx-auto mb-4 rounded-lg border border-red-300 bg-red-50 text-red-800 p-4">
+<i class="fa-solid fa-triangle-exclamation mr-2"></i> Bir hata oluştu. Lütfen tekrar deneyin.
+</div>
+<form id="contact-form" class="max-w-xl mx-auto grid gap-4">
+<input type="text" name="_gotcha" class="hidden" tabindex="-1" autocomplete="off"/>
+<input type="text" name="isim" placeholder="Adınız" required class="p-4 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400"/>
+<input type="email" name="email" placeholder="Email" required class="p-4 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400"/>
+<textarea name="mesaj" placeholder="Mesajınız" rows="4" required class="p-4 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400"></textarea>
+<button id="submit-btn" type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded shadow-lg btn-hover disabled:opacity-60 disabled:cursor-not-allowed">
+Gönder
+</button>
+</form>
 </section>
 
-<!-- Footer -->
 <footer class="bg-gray-900 text-gray-400 py-8 text-center fade-in">
-  <p>© 2025 Caner Teper. Tüm hakları saklıdır.</p>
-  <div class="flex justify-center space-x-4 mt-4">
-    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-  </div>
+<p>© 2025 Caner Teper. Tüm hakları saklıdır.</p>
+<div class="flex justify-center space-x-4 mt-4">
+<a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+<a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+<a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+</div>
 </footer>
 
-<!-- Confetti JS -->
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
-<!-- Scripts -->
 <script>
-  // Fade-in
-  const faders = document.querySelectorAll('.fade-in');
-  const appearOptions = { threshold:0.1 };
-  const appearOnScroll = new IntersectionObserver((entries, observer)=>{
-    entries.forEach(entry=>{
-      if(entry.isIntersecting){
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, appearOptions);
-  faders.forEach(fader=>appearOnScroll.observe(fader));
+const faders=document.querySelectorAll('.fade-in');
+const appearOptions={threshold:0.1};
+const appearOnScroll=new IntersectionObserver((entries,observer)=>{
+entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target);}});
+},appearOptions);
+faders.forEach(fader=>appearOnScroll.observe(fader));
 
-  // Hamburger
-  const menuBtn = document.getElementById('menu-btn');
-  const mobileMenu = document.getElementById('mobile-menu');
-  menuBtn.addEventListener('click',()=>{
-    mobileMenu.classList.toggle('hidden');
-    document.body.style.overflow = mobileMenu.classList.contains('hidden') ? '' : 'hidden';
-  });
-  mobileMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>mobileMenu.classList.add('hidden')));
+const menuBtn=document.getElementById('menu-btn');
+const mobileMenu=document.getElementById('mobile-menu');
+menuBtn.addEventListener('click',()=>{
+mobileMenu.classList.toggle('hidden');
+document.body.style.overflow=mobileMenu.classList.contains('hidden')?'':'hidden';
+});
+mobileMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>mobileMenu.classList.add('hidden')));
 
-  // Formspree AJAX + Confetti
-  const form = document.getElementById('contact-form');
-  const btn  = document.getElementById('submit-btn');
-  const ok   = document.getElementById('alert-success');
-  const err  = document.getElementById('alert-error');
+const form=document.getElementById('contact-form');
+const btn=document.getElementById('submit-btn');
+const ok=document.getElementById('alert-success');
+const err=document.getElementById('alert-error');
+form.addEventListener('submit',async e=>{
+e.preventDefault();ok.classList.add('hidden');err.classList.add('hidden');btn.disabled=true;
+const originalText=btn.textContent; btn.textContent='Gönderiliyor...';
+const formData=new FormData(form);
+try{
+const ENDPOINT_URL='https://formspree.io/f/xvgqyagb';
+const response=await fetch(ENDPOINT_URL,{method:'POST',body:formData,headers:{'Accept':'application/json'}});
+if(response.ok){ok.classList.remove('hidden');form.reset();}else{err.classList.remove('hidden');}
+}catch(e){err.classList.remove('hidden');}finally{btn.disabled=false;btn.textContent=originalText;}
+});
 
-  form.addEventListener('submit', async (e)=>{
-    e.preventDefault();
-    ok.classList.add('hidden');
-    err.classList.add('hidden');
-    btn.disabled = true;
-    const originalText = btn.textContent;
-    btn.textContent = 'Gönderiliyor...';
+// Parallax
+const parallaxElems=document.querySelectorAll('[data-parallax]');
+function updateParallax(){
+const scrollTop=window.pageYOffset;
+parallaxElems.forEach(el=>{let speed=parseFloat(el.getAttribute('data-parallax'));if(window.innerWidth<=768)speed*=0.5;el.style.transform=`translateY(${scrollTop*speed}px)`;});
+}
+window.addEventListener('scroll',updateParallax);
+window.addEventListener('resize',updateParallax);
 
-    const formData = new FormData(form);
-    try {
-      const ENDPOINT_URL = 'https://formspree.io/f/xvgqyagb';
-      const response = await fetch(ENDPOINT_URL, {
-        method: 'POST',
-        body: formData,
-        headers: { 'Accept': 'application/json' }
-      });
-      if (response.ok) {
-        ok.classList.remove('hidden');
-        form.reset();
-        confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-      } else { err.classList.remove('hidden'); }
-    } catch(e) { err.classList.remove('hidden'); }
-    finally { btn.disabled = false; btn.textContent = originalText; }
-  });
+// Particle background
+const canvas=document.getElementById('bgCanvas');
+const ctx=canvas.getContext('2d');
+canvas.width=innerWidth;canvas.height=innerHeight;
+class Particle{constructor(){this.x=Math.random()*canvas.width;this.y=Math.random()*canvas.height;this.size=Math.random()*2+1;this.speedX=(Math.random()-0.5)*0.5;this.speedY=(Math.random()-0.5)*0.5;}
+update(){this.x+=this.speedX;this.y+=this.speedY;if(this.x<0||this.x>canvas.width)this.speedX*=-1;if(this.y<0||this.y>canvas.height)this.speedY*=-1;}
+draw(){ctx.beginPath();ctx.arc(this.x,this.y,this.size,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,0.6)';ctx.fill();}}
+const particlesArray=[];for(let i=0;i<100;i++){particlesArray.push(new Particle());}
+let mouse={x:canvas.width/2,y:canvas.height/2};
+window.addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY;});
+function drawInteractiveParticles(){
+ctx.clearRect(0,0,canvas.width,canvas.height);
+particlesArray.forEach(p=>{p.update();p.draw();
+const dx=p.x-mouse.x;const dy=p.y-mouse.y;const distance=Math.sqrt(dx*dx+dy*dy);
+if(distance<150){ctx.strokeStyle=`rgba(255,255,255,${1-distance/150})`;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(mouse.x,mouse.y);ctx.stroke();}});
+requestAnimationFrame(drawInteractiveParticles);}
+drawInteractiveParticles();
+window.addEventListener('resize',()=>{canvas.width=innerWidth;canvas.height=innerHeight;});
 
-  // Parallax Effect
-  const parallaxElems = document.querySelectorAll('[data-parallax]');
-  window.addEventListener('scroll', () => {
-    const scrollTop = window.pageYOffset;
-    parallaxElems.forEach(el => {
-      const speed = parseFloat(el.getAttribute('data-parallax'));
-      el.style.transform = `translateY(${scrollTop * speed}px)`;
-    });
-  });
-
-  // Particle Background + Mouse Interaction
-  const canvas = document.getElementById('particles-canvas');
-  const ctx = canvas.getContext('2d');
-  let particlesArray = [];
-  let mouse = { x: canvas.width/2, y: canvas.height/2 };
-
-  function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-  window.addEventListener('resize', resizeCanvas);
-  resizeCanvas();
-
-  window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
-
-  class Particle {
-    constructor() {
-      this.x = Math.random()*canvas.width;
-      this.y = Math.random()*canvas.height;
-      this.size = Math.random()*3+1;
-      this.speedX = (Math.random()-0.5)*0.5;
-      this.speedY = (Math.random()-0.5)*0.5;
-    }
-    update() {
-      this.x += this.speedX;
-      this.y += this.speedY;
-      if(this.x<0||this.x>canvas.width)this.speedX*=-1;
-      if(this.y<0||this.y>canvas.height)this.speedY*=-1;
-    }
-    draw() {
-      ctx.fillStyle='rgba(255,255,255,0.5)';
-      ctx.beginPath();
-      ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
-      ctx.fill();
-    }
-  }
-
-  function initParticles() {
-    particlesArray = [];
-    const number = Math.floor((canvas.width*canvas.height)/8000);
-    for(let i=0;i<number;i++) particlesArray.push(new Particle());
-  }
-  initParticles();
-
-  function drawInteractiveParticles(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    particlesArray.forEach(p=>{
-      p.update(); p.draw();
-      const dx = p.x - mouse.x;
-      const dy = p.y - mouse.y;
-      const distance = Math.sqrt(dx*dx + dy*dy);
-      if(distance<150){
-        ctx.strokeStyle = `rgba(255,255,255,${1-distance/150})`;
-        ctx.lineWidth=1;
-        ctx.beginPath();
-        ctx.moveTo(p.x,p.y);
-        ctx.lineTo(mouse.x,mouse.y);
-        ctx.stroke();
-      }
-    });
-    ctx.beginPath();
-    const gradient = ctx.createRadialGradient(mouse.x,mouse.y,0,mouse.x,mouse.y,100);
-    gradient.addColorStop(0,'rgba(255,255,255,0.2)');
-    gradient.addColorStop(1,'rgba(255,255,255,0)');
-    ctx.fillStyle = gradient;
-    ctx.arc(mouse.x,mouse.y,100,0,Math.PI*2);
-    ctx.fill();
-    requestAnimationFrame(drawInteractiveParticles);
-  }
-  drawInteractiveParticles();
+// Scroll ile gradient değişimi
+const hero = document.getElementById('hero');
+const colors = [['#10b981','#3b82f6'],['#3b82f6','#8b5cf6'],['#8b5cf6','#f59e0b'],['#f59e0b','#10b981']];
+function lerpColor(a,b,t){const ah=parseInt(a.replace('#',''),16),bh=parseInt(b.replace('#',''),16);const ar=(ah>>16)&0xff,ag=(ah>>8)&0xff,ab=ah&0xff;const br=(bh>>16)&0xff,bg=(bh>>8)&0xff,bb=bh&0xff;const rr=Math.round(ar+(br-ar)*t),rg=Math.round(ag+(bg-ag)*t),rb=Math.round(ab+(bb-ab)*t);return `rgb(${rr},${rg},${rb})`;}
+window.addEventListener('scroll', ()=>{const scrollPerc=window.scrollY/(document.body.scrollHeight-window.innerHeight);const index=Math.floor(scrollPerc*(colors.length-1));const t=(scrollPerc*(colors.length-1))-index;const color1=lerpColor(colors[index][0],colors[index+1][0],t);const color2=lerpColor(colors[index][1],colors[index+1][1],t);hero.style.background=`linear-gradient(270deg, ${color1}, ${color2})`;});
 </script>
+
 </body>
 </html>
